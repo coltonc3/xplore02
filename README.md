@@ -6,6 +6,13 @@ The demo compares fictional x402 merchants using usefulness, reliability,
 trust, certifications, commercial readiness, and review confidence. It runs
 entirely in the browser with no server or dependencies.
 
+## Hosted demo
+
+https://f.stableupload.dev/nhanj4av9x/demo.xplore02.html
+
+The hosted page is a published snapshot. The version-controlled source of
+truth is `xplore-marketplace-demo.html` in this repository.
+
 ## Run the demo
 
 Open `xplore-marketplace-demo.html` in a browser.
