@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>xPlore02 — trusted discovery for x402</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17201e;
+      --muted: #68736f;
+      --line: #dfe4e2;
+      --soft: #f5f7f6;
+      --paper: #ffffff;
+      --green: #176b53;
+      --green-soft: #e7f3ee;
+      --amber: #95651c;
+      --amber-soft: #fbf2de;
+      --red: #a13d35;
+      --red-soft: #f9e9e7;
+      --blue: #315ea8;
+      --blue-soft: #eaf0fa;
+      --shadow: 0 20px 50px rgba(20, 35, 30, .10);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: #f2f4f3; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .shell { max-width: 1440px; margin: 0 auto; min-height: 100vh; background: var(--paper); }
+    .topbar { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 34px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; gap: 12px; align-items: center; font-weight: 750; letter-spacing: -.02em; }
+    .mark { width: 30px; height: 30px; border-radius: 8px; color: white; background: var(--ink); display: grid; place-items: center; font-size: 14px; }
+    .top-actions { display: flex; gap: 18px; align-items: center; color: var(--muted); font-size: 13px; }
+    .top-actions button { border: 1px solid var(--line); background: white; padding: 8px 12px; border-radius: 8px; color: var(--ink); }
+    main { padding: 38px 34px 72px; }
+    .hero { display: flex; justify-content: space-between; gap: 30px; align-items: end; margin-bottom: 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 12px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(32px, 4vw, 50px); line-height: 1.04; letter-spacing: -.045em; max-width: 760px; }
+    .subhead { margin: 14px 0 0; color: var(--muted); max-width: 680px; line-height: 1.55; font-size: 16px; }
+    .sample-note { flex: 0 0 250px; padding: 13px 15px; border: 1px solid #d9e7e1; background: #f0f7f4; color: #3f5f54; border-radius: 10px; font-size: 12px; line-height: 1.45; }
+    .sample-note strong { color: var(--green); display: block; margin-bottom: 2px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+    .stat { padding: 16px 18px; border-right: 1px solid var(--line); background: var(--soft); }
+    .stat:last-child { border-right: 0; }
+    .stat b { display: block; font-size: 20px; letter-spacing: -.03em; }
+    .stat span { color: var(--muted); font-size: 12px; }
+    .methodology-link { display: flex; justify-content: flex-end; margin: -8px 0 14px; }
+    .methodology-link button { border: 0; background: transparent; color: var(--green); padding: 5px 0; font-weight: 700; font-size: 12px; }
+    .controls { display: grid; grid-template-columns: minmax(260px, 1fr) 190px 190px auto; gap: 10px; margin-bottom: 16px; }
+    .control { height: 42px; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--ink); padding: 0 12px; outline: none; }
+    .control:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .reset { border: 0; background: transparent; color: var(--green); padding: 0 10px; font-weight: 650; }
+    .table-wrap { border: 1px solid var(--line); border-radius: 12px; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 1120px; }
+    th { position: sticky; top: 0; z-index: 1; padding: 12px 14px; background: var(--soft); color: var(--muted); font-size: 11px; letter-spacing: .06em; text-align: left; text-transform: uppercase; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th button { border: 0; background: none; color: inherit; padding: 0; text-transform: inherit; font: inherit; letter-spacing: inherit; }
+    th button:hover { color: var(--ink); }
+    td { padding: 15px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; font-size: 13px; }
+    tbody tr { transition: background .15s ease; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #fafcfb; }
+    .merchant-cell { min-width: 255px; }
+    .merchant { display: flex; gap: 11px; align-items: center; }
+    .avatar { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; color: white; font-weight: 800; font-size: 12px; flex: 0 0 auto; }
+    .merchant-name { font-weight: 720; display: flex; align-items: center; gap: 5px; }
+    .merchant-task { color: var(--muted); font-size: 12px; margin-top: 3px; max-width: 290px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .verified { color: var(--blue); font-weight: 800; font-size: 12px; }
+    .rank { color: var(--muted); font-variant-numeric: tabular-nums; width: 30px; }
+    .score { font-size: 15px; font-weight: 760; }
+    .score small { color: var(--muted); font-weight: 500; font-size: 11px; }
+    .metric { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .metric small { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 7px; border-radius: 999px; font-size: 10px; font-weight: 750; white-space: nowrap; border: 1px solid transparent; }
+    .pill.good { color: var(--green); background: var(--green-soft); border-color: #cce5db; }
+    .pill.warn { color: var(--amber); background: var(--amber-soft); border-color: #eddcaf; }
+    .pill.bad { color: var(--red); background: var(--red-soft); border-color: #efcfca; }
+    .pill.neutral { color: #59635f; background: #f0f2f1; border-color: var(--line); }
+    .price { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; white-space: nowrap; }
+    .view { border: 1px solid var(--line); background: white; padding: 7px 10px; border-radius: 7px; font-weight: 650; font-size: 12px; }
+    .view:hover { border-color: var(--green); color: var(--green); }
+    .empty { text-align: center; padding: 50px 20px; color: var(--muted); }
+    dialog { width: min(650px, calc(100vw - 30px)); border: 0; border-radius: 16px; padding: 0; box-shadow: var(--shadow); }
+    dialog::backdrop { background: rgba(14, 21, 19, .46); backdrop-filter: blur(2px); }
+    .dialog-head { display: flex; justify-content: space-between; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+    .dialog-head h2 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+    .close { border: 0; background: var(--soft); width: 32px; height: 32px; border-radius: 8px; font-size: 18px; }
+    .dialog-body { padding: 24px; }
+    .weights { display: grid; gap: 10px; margin: 0 0 20px; padding: 0; list-style: none; }
+    .weight { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; }
+    .weight b { color: var(--green); }
+    .method-notes { margin: 0; padding-left: 20px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .method-notes li + li { margin-top: 7px; }
+    .rationale { margin: 0 0 22px; padding: 15px; border-left: 3px solid var(--green); background: var(--green-soft); line-height: 1.5; font-size: 14px; }
+    .details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .detail { border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+    .detail span { color: var(--muted); display: block; font-size: 11px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
+    .detail b { font-size: 13px; }
+    .tasks { margin-top: 20px; }
+    .tasks span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+    .task-list { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 8px; }
+    .task { background: var(--soft); border: 1px solid var(--line); padding: 6px 9px; border-radius: 7px; font-size: 12px; }
+    .footer { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; margin-top: 12px; }
+    @media (max-width: 800px) {
+      .topbar, main { padding-left: 18px; padding-right: 18px; }
+      .hero { align-items: start; flex-direction: column; }
+      .sample-note { flex-basis: auto; width: 100%; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: 0; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .controls { grid-template-columns: 1fr 1fr; }
+      #search { grid-column: 1 / -1; }
+      .details { grid-template-columns: 1fr; }
+      .top-actions span { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="mark">02</span> xPlore02</div>
+      <div class="top-actions"><span>Open x402 discovery</span><button type="button">List a merchant</button></div>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Merchant discovery layer</p>
+          <h1>Find the right API.<br>Know who you’re paying.</h1>
+          <p class="subhead">Rank x402 merchants by usefulness, trust, performance, and commercial readiness—not by who owns the marketplace.</p>
+        </div>
+        <aside class="sample-note"><strong>Demo environment</strong>All merchants, reviews, certifications, and metrics below are fictional sample data.</aside>
+      </section>
+
+      <section class="stats" aria-label="Marketplace summary">
+        <div class="stat"><b id="stat-merchants">—</b><span>merchants indexed</span></div>
+        <div class="stat"><b id="stat-verified">—</b><span>identity verified</span></div>
+        <div class="stat"><b id="stat-enterprise">—</b><span>enterprise ready</span></div>
+        <div class="stat"><b id="stat-networks">—</b><span>payment networks</span></div>
+      </section>
+      <div class="methodology-link"><button id="methodology-button" type="button">How scoring works →</button></div>
+
+      <section class="controls" aria-label="Marketplace filters">
+        <input class="control" id="search" type="search" placeholder="Search tasks, merchants, or categories…" aria-label="Search merchants">
+        <select class="control" id="quality-filter" aria-label="Filter by quality">
+          <option value="all">All quality levels</option>
+          <option value="strong">Score 8.0+</option>
+          <option value="weak">Score below 6.0</option>
+        </select>
+        <select class="control" id="enterprise-filter" aria-label="Filter by enterprise readiness">
+          <option value="all">Any readiness</option>
+          <option value="ready">Enterprise ready</option>
+          <option value="not-ready">Not enterprise ready</option>
+        </select>
+        <button class="reset" type="button" id="reset">Reset</button>
+      </section>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th>
+            <th>Merchant / useful for</th>
+            <th><button type="button" data-sort="score">xPlore02 score ↕</button></th>
+            <th><button type="button" data-sort="price">Price ↕</button></th>
+            <th><button type="button" data-sort="uptime">Uptime ↕</button></th>
+            <th><button type="button" data-sort="latency">Latency ↕</button></th>
+            <th>Trust</th>
+            <th>Certifications</th>
+            <th>SLA</th>
+            <th></th>
+          </tr></thead>
+          <tbody id="merchant-rows"></tbody>
+        </table>
+      </div>
+      <div class="footer"><span id="result-count">Showing merchants</span><span>Source names: Agentic Market · Quality signals: fictional demo data</span></div>
+    </main>
+  </div>
+
+  <dialog id="merchant-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-head"><div><p class="eyebrow">Merchant profile</p><h2 id="dialog-title"></h2></div><button class="close merchant-close" type="button" aria-label="Close merchant details">×</button></div>
+    <div class="dialog-body" id="dialog-body"></div>
+  </dialog>
+
+  <dialog id="methodology-dialog" aria-labelledby="methodology-title">
+    <div class="dialog-head"><div><p class="eyebrow">Transparent ranking</p><h2 id="methodology-title">How the xPlore02 score works</h2></div><button class="close methodology-close" type="button" aria-label="Close score methodology">×</button></div>
+    <div class="dialog-body">
+      <ul class="weights" aria-label="Score weights">
+        <li class="weight"><span>Task usefulness</span><b>30%</b></li>
+        <li class="weight"><span>Reliability and performance</span><b>25%</b></li>
+        <li class="weight"><span>Trust and certifications</span><b>20%</b></li>
+        <li class="weight"><span>Commercial readiness</span><b>15%</b></li>
+        <li class="weight"><span>Review confidence and volume</span><b>10%</b></li>
+      </ul>
+      <ul class="method-notes">
+        <li>Missing or unverified evidence lowers the score instead of being treated as neutral.</li>
+        <li>Human feedback carries more weight than agent-generated reviews.</li>
+        <li>Price is shown and filterable, but does not automatically improve quality.</li>
+        <li>Allium’s enterprise evidence is source-backed; other merchant quality signals are fictional demo data.</li>
+      </ul>
+    </div>
+  </dialog>
+
+  <script>
+    const profiles = [
+      { id: "claude", name: "Claude", initials: "CL", color: "#7b5643", category: "Inference", task: "Claude models through x402-enabled gateways", score: 9.4, price: .001, rating: 9.5, uptime: 99.99, latency: 720, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 4820, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on gateway error", tasks: ["Reasoning", "Writing", "Code review"], rationale: "Strong usefulness, verified gateway operations, broad adoption, and mature controls make this the safest general-purpose inference choice." },
+      { id: "chatgpt", name: "ChatGPT", initials: "CG", color: "#35695a", category: "Inference", task: "GPT, Responses, Images, and audio APIs", score: 9.2, price: .001, rating: 9.4, uptime: 99.98, latency: 810, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 5612, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on failed response", tasks: ["Reasoning", "Image generation", "Audio"], rationale: "Broad capability and high review volume offset slightly higher observed latency across its mixed endpoint set." },
+      { id: "deepseek", name: "DeepSeek", initials: "DS", color: "#3c5d88", category: "Inference", task: "Frontier LLM for coding and reasoning", score: 7.8, price: .001, rating: 8.6, uptime: 99.72, latency: 940, verified: false, soc2: "No SOC 2", sla: "Best effort", reviews: 1108, enterprise: false, network: "Base · USDC", refund: "Gateway dependent", tasks: ["Coding", "Reasoning", "Math"], rationale: "Strong usefulness and price, but limited verified operational and contractual evidence keep it below enterprise-ready gateways." },
+      { id: "blockrun", name: "BlockRun.AI", initials: "BR", color: "#73533b", category: "Inference", task: "Multi-provider LLM gateway", score: 8.7, price: .006, rating: 8.9, uptime: 99.95, latency: 490, verified: true, soc2: "In review", sla: "99.9%", reviews: 1894, enterprise: true, network: "Base · USDC", refund: "Automatic on provider failure", tasks: ["Model routing", "Fallback inference", "Cost optimization"], rationale: "Verified gateway with unusually broad model coverage and useful failover behavior; certification remains in review." },
+      { id: "questflow", name: "Questflow", initials: "QF", color: "#604d7f", category: "Inference", task: "Multi-agent orchestration and swarms", score: 6.9, price: .012, rating: 7.7, uptime: 98.9, latency: 1480, verified: false, soc2: "No SOC 2", sla: "No SLA", reviews: 214, enterprise: false, network: "Base · USDC", refund: "No published policy", tasks: ["Agent swarms", "Workflow orchestration", "Task delegation"], rationale: "Interesting orchestration capability, but sparse performance evidence and no SLA make critical use premature." },
+      { id: "gemini", name: "Google Gemini", initials: "GG", color: "#4266a6", category: "Inference", task: "Gemini models through x402 gateways", score: 8.9, price: .001, rating: 9.0, uptime: 99.96, latency: 760, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 2370, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on failed response", tasks: ["Multimodal analysis", "Reasoning", "Long context"], rationale: "Strong multimodal usefulness, verified gateway identity, and credible controls support enterprise use." },
+      { id: "groq", name: "Groq", initials: "GQ", color: "#8a493d", category: "Inference", task: "Ultra-fast LLM inference", score: 8.3, price: .001, rating: 8.7, uptime: 99.91, latency: 145, verified: true, soc2: "No SOC 2", sla: "99.5%", reviews: 934, enterprise: false, network: "Base · USDC", refund: "Credit on timeout", tasks: ["Low-latency chat", "Classification", "Coding"], rationale: "Excellent latency and good usefulness, with certification evidence the main enterprise-readiness gap." },
+      { id: "venice", name: "Venice", initials: "VE", color: "#7a3f52", category: "Inference", task: "Privacy-focused text, image, audio, and video inference", score: 7.5, price: .001, rating: 8.1, uptime: 99.4, latency: 980, verified: false, soc2: "No SOC 2", sla: "No SLA", reviews: 507, enterprise: false, network: "Base · USDC", refund: "Case-by-case", tasks: ["Private inference", "Image generation", "Embeddings"], rationale: "Broad and privacy-oriented, but unverified controls and missing contractual commitments lower confidence." },
+      { id: "hyperbolic", name: "Hyperbolic", initials: "HY", color: "#4f5c70", category: "Inference", task: "GPU inference for custom models", score: 6.2, price: .1, rating: 7.0, uptime: 97.8, latency: 2260, verified: false, soc2: "Insufficient data", sla: "No SLA", reviews: 68, enterprise: false, network: "Base · USDC", refund: "Unknown", tasks: ["Custom models", "GPU inference", "Experiments"], rationale: "Useful niche capability, but thin review volume and incomplete reliability evidence make results difficult to trust." },
+      { id: "tripadvisor", name: "Tripadvisor", initials: "TA", color: "#347261", category: "Data", task: "Travel locations, photos, and reviews", score: 8.6, price: .01, rating: 8.8, uptime: 99.97, latency: 330, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 3410, enterprise: true, network: "Base · USDC", refund: "Credit on invalid response", tasks: ["Hotel research", "Restaurant reviews", "Attractions"], rationale: "Recognizable source, large review base, verified identity, and strong service levels make it highly dependable." },
+      { id: "the-graph", name: "The Graph", initials: "TG", color: "#67539a", category: "Data", task: "Blockchain data through subgraphs", score: 8.4, price: .004, rating: 8.7, uptime: 99.94, latency: 420, verified: true, soc2: "In review", sla: "99.9%", reviews: 1297, enterprise: true, network: "Base · USDC", refund: "Query credit on failure", tasks: ["Subgraph queries", "Protocol analytics", "Blockchain indexing"], rationale: "Mature data model and reliable performance; certification review is the main remaining trust gap." },
+      { id: "coinmarketcap", name: "CoinMarketCap", initials: "CM", color: "#3866ad", category: "Data", task: "Crypto prices, rankings, and market data", score: 8.8, price: .01, rating: 9.0, uptime: 99.98, latency: 210, verified: true, soc2: "SOC 2 Type II", sla: "99.95%", reviews: 2874, enterprise: true, network: "Base · USDC", refund: "Automatic on stale data", tasks: ["Token prices", "Market rankings", "Market caps"], rationale: "Verified, highly available, well reviewed, and backed by mature controls for production market-data workflows." },
+      { id: "parallel", name: "Parallel", initials: "PA", color: "#3e646d", category: "Data", task: "AI-powered financial analysis and research", score: 8.1, price: .01, rating: 8.5, uptime: 99.9, latency: 680, verified: true, soc2: "In review", sla: "99.5%", reviews: 742, enterprise: true, network: "Base · USDC", refund: "Credit on incomplete report", tasks: ["Company research", "Financial analysis", "Due diligence"], rationale: "High human usefulness and verified operation, with moderate review depth and certification still pending." },
+      { id: "coingecko", name: "CoinGecko", initials: "CK", color: "#638341", category: "Data", task: "Crypto prices, market caps, and trading volume", score: 8.9, price: .01, rating: 9.1, uptime: 99.98, latency: 190, verified: true, soc2: "SOC 2 Type II", sla: "99.95%", reviews: 3644, enterprise: true, network: "Base, Solana · USDC", refund: "Automatic on stale data", tasks: ["Token prices", "Trading volume", "Market metadata"], rationale: "Excellent coverage, strong review volume, and independently verified controls make it a leading market-data choice." },
+      { id: "wolfram-alpha", name: "Wolfram|Alpha", initials: "WA", color: "#9a4336", category: "Data", task: "Factual, mathematical, and scientific computation", score: 9.0, price: .01, rating: 9.3, uptime: 99.99, latency: 360, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 2955, enterprise: true, network: "Base · USDC", refund: "Credit on computation error", tasks: ["Math", "Science", "Factual computation"], rationale: "Exceptional task fit for deterministic computation with verified identity, mature controls, and deep user evidence." },
+      { id: "quicknode", name: "QuickNode", initials: "QN", color: "#4d5f90", category: "Data", task: "RPC and blockchain APIs across 80+ chains", score: 8.5, price: 10, rating: 8.8, uptime: 99.99, latency: 92, verified: true, soc2: "SOC 2 Type II", sla: "99.99%", reviews: 1880, enterprise: true, network: "Base, Solana, Polygon · USDC", refund: "SLA service credits", tasks: ["RPC access", "Transaction data", "Multi-chain infrastructure"], rationale: "High price is offset by very low latency, verified controls, multi-chain breadth, and contractual availability." },
+      { id: "messari", name: "Messari", initials: "ME", color: "#315f58", category: "Data", task: "Crypto intelligence and research data", score: 8.7, price: .35, rating: 9.0, uptime: 99.95, latency: 470, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 1216, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on failed report", tasks: ["Asset research", "Protocol metrics", "Market intelligence"], rationale: "Premium pricing reflects curated research, strong usefulness ratings, verified identity, and enterprise controls." },
+      { id: "allium", name: "Allium", initials: "AL", color: "#695183", category: "Data", task: "Onchain prices, balances, transactions, PnL, and SQL", score: 8.8, price: .02, rating: 8.9, uptime: 100, uptimePeriod: "90d", latency: null, latencyText: "Sub-second", verified: true, soc2: "SOC certified", certifications: ["SOC 1 Type 1 & 2", "SOC 2 Type 1 & 2"], sla: "99.9%", support: "24/7 enterprise support", reviews: 978, enterprise: true, network: "Base, Polygon, Solana · USDC", refund: "Fees are non-refundable", tasks: ["Wallet balances", "SQL analytics", "Transaction history"], rationale: "Allium publicly states SOC 1 and SOC 2 Type 1 & 2 certification, a 99.9% uptime commitment, and 24/7 enterprise support. Its official status page reports 100% Realtime API uptime over the latest 90-day window; exact contractual remedies depend on the customer Order." },
+      { id: "otto-ai", name: "Otto AI", initials: "OA", color: "#7a6239", category: "Data", task: "Agentic DeFi execution and market intelligence", score: 7.2, price: .003, rating: 7.9, uptime: 99.1, latency: 870, verified: false, soc2: "No SOC 2", sla: "Best effort", reviews: 356, enterprise: false, network: "Base, Solana, Polygon · USDC", refund: "Endpoint dependent", tasks: ["Swaps", "Yield discovery", "Token research"], rationale: "Broad functionality and good value, but the large endpoint surface has uneven evidence and no audited control set." },
+      { id: "apify", name: "Apify", initials: "AP", color: "#3e755e", category: "Data", task: "Web scraping, crawling, extraction, and automation", score: 8.4, price: 1, rating: 8.8, uptime: 99.95, latency: 1240, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 2265, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on failed actor run", tasks: ["Web scraping", "Crawling", "Structured extraction"], rationale: "Mature platform, verified controls, and large usage history outweigh higher latency and per-call price." },
+      { id: "dripstack", name: "Dripstack", initials: "DR", color: "#73564c", category: "Data", task: "Pay-per-article access to Substack posts", score: 6.5, price: .2, rating: 7.2, uptime: 98.7, latency: 760, verified: false, soc2: "No SOC 2", sla: "No SLA", reviews: 143, enterprise: false, network: "Base, Solana · USDC", refund: "Refund if article unavailable", tasks: ["Paywalled articles", "Newsletter research", "Creator content"], rationale: "Clear consumer use case, but limited review volume and no enterprise controls constrain higher-stakes adoption." },
+      { id: "arkham", name: "Arkham", initials: "AR", color: "#414750", category: "Data", task: "Onchain entities, balances, transfers, and market data", score: 7.9, price: .2, rating: 8.4, uptime: 99.7, latency: 510, verified: true, soc2: "In review", sla: "Best effort", reviews: 864, enterprise: false, network: "Base, Solana · USDC", refund: "Case-by-case", tasks: ["Entity labels", "Wallet intelligence", "Token flows"], rationale: "Useful differentiated intelligence and verified identity, but variable pricing and limited contractual coverage reduce readiness." },
+      { id: "minifetch", name: "Minifetch", initials: "MF", color: "#4c6e73", category: "Data", task: "Structured metadata and token-efficient web content", score: 7.4, price: .002, rating: 8.0, uptime: 99.3, latency: 440, verified: false, soc2: "No SOC 2", sla: "No SLA", reviews: 292, enterprise: false, network: "Base, Solana · USDC", refund: "Credit on empty extraction", tasks: ["Metadata", "Web extraction", "Token-efficient retrieval"], rationale: "Good value and useful outputs, but unverified ownership and missing control evidence keep it in the emerging tier." },
+      { id: "chainquery", name: "ChainQuery", initials: "CQ", color: "#765a3d", category: "Data", task: "Independent Bitcoin onchain intelligence", score: 5.1, price: .01, rating: 6.1, uptime: 94.8, latency: 2180, verified: false, soc2: "Insufficient data", sla: "No SLA", reviews: 19, enterprise: false, network: "Base · USDC", refund: "Unknown", tasks: ["Bitcoin fees", "CDD spikes", "HODL waves"], rationale: "Interesting niche signals, but low review volume, weak observed reliability, and insufficient operator evidence make this a risky choice." }
+    ];
+
+    // This is the discovery document's proposed registry shape. The UI below
+    // reads from this object, then normalizes nested fields for table display.
+    const registry = {
+      x402Version: 2,
+      items: profiles.map((profile) => ({
+        resource: `https://api.${profile.id}.example/v1/query`,
+        type: "http",
+        x402Version: 2,
+        lastUpdated: "2026-08-21T16:40:14.015Z",
+        accepts: [{
+          scheme: "exact",
+          network: profile.network.includes("Solana") && !profile.network.includes("Base") ? "solana:mainnet" : "eip155:8453",
+          asset: profile.network === "Unknown" ? "unknown" : "USDC",
+          amount: String(Math.round(profile.price * 1_000_000)),
+          payTo: profile.verified ? "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed" : "unverified",
+          extra: { name: "USD Coin", version: "2" }
+        }],
+        metadata: {
+          provider: {
+            name: profile.name,
+            verified: profile.verified,
+            description: profile.task,
+            category: profile.category.toUpperCase().replaceAll(" ", "_"),
+            tags: ["x402", ...profile.tasks.map((task) => task.toLowerCase().replaceAll(" ", "-"))],
+            website: `https://${profile.id}.example`,
+            docsUrl: `https://${profile.id}.example/docs`,
+            openApiUrl: `https://${profile.id}.example/openapi.yaml`
+          },
+          path: "/v1/query",
+          method: "GET",
+          description: profile.task,
+          rating: profile.rating,
+          usefulFor: profile.tasks.join(", "),
+          topRatings: [{ task: profile.tasks[0], rating: profile.rating, reason: profile.rationale }],
+          certifications: profile.certifications
+            ? profile.certifications.map((status) => ({ type: status.startsWith("SOC 1") ? "soc1" : "soc2", status, link: "https://www.allium.so/security" }))
+            : profile.soc2 === "No SOC 2" || profile.soc2 === "Insufficient data" ? [] : [{ type: "soc2", status: profile.soc2, link: "https://example.com/sample-certificate", last_renewed: "2026-01-15", expires: "2027-01-15" }],
+          sla: profile.sla === "No SLA" ? [] : [{ availability: profile.sla, support: profile.support || (profile.enterprise ? "24/7" : "best-effort") }],
+          uptime: { period: profile.uptimePeriod || "30d", value: profile.uptime === null ? null : profile.uptime / 100 },
+          latency: { period: "7d", value: profile.latency, description: profile.latencyText || null },
+          buyerConcentration: { topBuyerShare: profile.reviews < 10 ? null : .18 },
+          mimeType: "application/json",
+          input: { type: "object", properties: { query: { type: "string" } } },
+          output: { type: "object" },
+          siwx: false,
+          supportsVanillax402: true,
+          demo: { ...profile }
+        }
+      })),
+      pagination: { limit: 50, offset: 0, total: profiles.length }
+    };
+
+    const merchants = registry.items.map((item) => {
+      const profile = item.metadata.demo;
+      return {
+        ...profile,
+        name: item.metadata.provider.name,
+        verified: item.metadata.provider.verified,
+        task: item.metadata.description,
+        rating: item.metadata.rating,
+        price: Number(item.accepts[0].amount) / 1_000_000,
+        uptime: item.metadata.uptime.value === null ? null : item.metadata.uptime.value * 100,
+        latency: item.metadata.latency.value,
+        latencyText: item.metadata.latency.description,
+        uptimePeriod: item.metadata.uptime.period,
+        soc2: item.metadata.certifications.map((certification) => certification.status).join(" · ") || profile.soc2,
+        sla: item.metadata.sla[0]?.availability || "No SLA",
+        support: item.metadata.sla[0]?.support || "Not publicly disclosed",
+        resource: item.resource
+      };
+    });
+
+    const state = { query: "", quality: "all", enterprise: "all", sort: "score", direction: "desc" };
+    const rows = document.querySelector("#merchant-rows");
+    const dialog = document.querySelector("#merchant-dialog");
+    const methodologyDialog = document.querySelector("#methodology-dialog");
+
+    function pill(text, tone) { return `<span class="pill ${tone}">${text}</span>`; }
+    function trustBadge(item) { return item.verified ? pill("✓ Verified", "good") : pill("Unverified", "warn"); }
+    function certBadge(item) {
+      if (item.soc2 === "SOC 2 Type II") return pill(item.soc2, "good");
+      if (item.soc2 === "In review") return pill(item.soc2, "warn");
+      if (item.soc2 === "Insufficient data" || item.soc2 === "Unverified claim") return pill(item.soc2, "bad");
+      return pill(item.soc2, "neutral");
+    }
+    function slaBadge(item) { return item.sla.includes("99.") ? pill(item.sla + " SLA", "good") : pill(item.sla, item.sla === "No SLA" ? "bad" : "neutral"); }
+    function scoreTone(score) { return score >= 8 ? "var(--green)" : score < 6 ? "var(--red)" : "var(--amber)"; }
+
+    function applyFilters() {
+      const query = state.query.toLowerCase().trim();
+      return merchants.filter((item) => {
+        const searchable = [item.name, item.category, item.task, ...item.tasks].join(" ").toLowerCase();
+        const qualityMatch = state.quality === "all" || (state.quality === "strong" ? item.score >= 8 : item.score < 6);
+        const enterpriseMatch = state.enterprise === "all" || (state.enterprise === "ready" ? item.enterprise : !item.enterprise);
+        return (!query || searchable.includes(query)) && qualityMatch && enterpriseMatch;
+      });
+    }
+
+    function sortMerchants(items) {
+      return [...items].sort((a, b) => {
+        const av = a[state.sort] ?? (state.direction === "asc" ? Infinity : -Infinity);
+        const bv = b[state.sort] ?? (state.direction === "asc" ? Infinity : -Infinity);
+        return (av - bv) * (state.direction === "asc" ? 1 : -1);
+      });
+    }
+
+    function renderStats() {
+      const networks = new Set(merchants.flatMap((item) => item.network.split("·")[0].split(",").map((network) => network.trim())));
+      document.querySelector("#stat-merchants").textContent = merchants.length;
+      document.querySelector("#stat-verified").textContent = merchants.filter((item) => item.verified).length;
+      document.querySelector("#stat-enterprise").textContent = merchants.filter((item) => item.enterprise).length;
+      document.querySelector("#stat-networks").textContent = networks.size;
+    }
+
+    function renderRows() {
+      const items = sortMerchants(applyFilters());
+      document.querySelector("#result-count").textContent = `Showing ${items.length} merchant${items.length === 1 ? "" : "s"}`;
+      if (!items.length) { rows.innerHTML = `<tr><td class="empty" colspan="10">No merchants match those filters.</td></tr>`; return; }
+      rows.innerHTML = items.map((item, index) => `<tr>
+        <td class="rank">${index + 1}</td>
+        <td class="merchant-cell"><div class="merchant"><span class="avatar" style="background:${item.color}">${item.initials}</span><div><div class="merchant-name">${item.name}${item.verified ? '<span class="verified" aria-label="Verified">●</span>' : ""}</div><div class="merchant-task">${item.task}</div></div></div></td>
+        <td><span class="score" style="color:${scoreTone(item.score)}">${item.score.toFixed(1)} <small>/ 10</small></span></td>
+        <td class="price">$${item.price < .001 ? item.price.toFixed(6) : item.price.toFixed(3)} / call</td>
+        <td class="metric">${item.uptime === null ? "—" : item.uptime + "%"}<small>${item.uptime === null ? "Insufficient data" : item.uptimePeriod + " observed"}</small></td>
+        <td class="metric">${item.latency === null ? (item.latencyText || "—") : item.latency + " ms"}<small>${item.latency === null ? (item.latencyText ? "Official description" : "Insufficient data") : "p50 · 7 days"}</small></td>
+        <td>${trustBadge(item)}</td><td>${certBadge(item)}</td><td>${slaBadge(item)}</td>
+        <td><button class="view" type="button" data-merchant="${item.id}">View</button></td>
+      </tr>`).join("");
+    }
+
+    function openMerchant(id) {
+      const item = merchants.find((merchant) => merchant.id === id);
+      if (!item) return;
+      document.querySelector("#dialog-title").textContent = item.name;
+      document.querySelector("#dialog-body").innerHTML = `<p class="rationale"><strong>Why it ranks here:</strong> ${item.rationale}</p><div class="details">
+        <div class="detail"><span>Human usefulness</span><b>${item.rating.toFixed(1)} / 10 from ${item.reviews.toLocaleString()} reviews</b></div>
+        <div class="detail"><span>Operator identity</span><b>${item.verified ? "Verified by xPlore02" : "Not verified"}</b></div>
+        <div class="detail"><span>Payment network</span><b>${item.network}</b></div>
+        <div class="detail"><span>Resource</span><b>${item.resource}</b></div>
+        <div class="detail"><span>Refund policy</span><b>${item.refund}</b></div>
+        <div class="detail"><span>Certifications</span><b>${item.soc2}</b></div>
+        <div class="detail"><span>Availability commitment</span><b>${item.sla} · ${item.support}</b></div>
+      </div><div class="tasks"><span>Commonly useful for</span><div class="task-list">${item.tasks.map((task) => `<span class="task">${task}</span>`).join("")}</div></div>`;
+      dialog.showModal();
+    }
+
+    function closeMerchant() { dialog.close(); }
+    function openMethodology() { methodologyDialog.showModal(); }
+    function closeMethodology() { methodologyDialog.close(); }
+    function resetFilters() {
+      state.query = ""; state.quality = "all"; state.enterprise = "all"; state.sort = "score"; state.direction = "desc";
+      document.querySelector("#search").value = "";
+      document.querySelector("#quality-filter").value = "all";
+      document.querySelector("#enterprise-filter").value = "all";
+      renderRows();
+    }
+
+    document.querySelector("#search").addEventListener("input", (event) => { state.query = event.target.value; renderRows(); });
+    document.querySelector("#quality-filter").addEventListener("change", (event) => { state.quality = event.target.value; renderRows(); });
+    document.querySelector("#enterprise-filter").addEventListener("change", (event) => { state.enterprise = event.target.value; renderRows(); });
+    document.querySelector("#reset").addEventListener("click", resetFilters);
+    document.querySelectorAll("[data-sort]").forEach((button) => button.addEventListener("click", () => {
+      const key = button.dataset.sort;
+      state.direction = state.sort === key && state.direction === "desc" ? "asc" : "desc";
+      state.sort = key; renderRows();
+    }));
+    rows.addEventListener("click", (event) => { const button = event.target.closest("[data-merchant]"); if (button) openMerchant(button.dataset.merchant); });
+    document.querySelector(".merchant-close").addEventListener("click", closeMerchant);
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) closeMerchant(); });
+    document.querySelector("#methodology-button").addEventListener("click", openMethodology);
+    document.querySelector(".methodology-close").addEventListener("click", closeMethodology);
+    methodologyDialog.addEventListener("click", (event) => { if (event.target === methodologyDialog) closeMethodology(); });
+    renderStats();
+    renderRows();
+  </script>
+</body>
+</html>
