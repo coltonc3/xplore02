@@ -4,12 +4,12 @@ import test from "node:test";
 
 const demoPath = new URL("../xplore-marketplace-demo.html", import.meta.url);
 
-test("demo includes a broad fictional merchant set and sample-data disclosure", async () => {
+test("demo includes a broad merchant set and sample-data disclosure", async () => {
   const html = await readFile(demoPath, "utf8");
   const merchantIds = [...html.matchAll(/\bid:\s*"([^"]+)"/g)].map((match) => match[1]);
 
-  assert.equal(merchantIds.length, 24);
-  for (const merchant of ["Claude", "ChatGPT", "BlockRun.AI", "Tripadvisor", "CoinGecko", "QuickNode", "Messari", "Allium", "Arkham", "ChainQuery"]) {
+  assert.equal(merchantIds.length, 25);
+  for (const merchant of ["Claude", "ChatGPT", "BlockRun.AI", "Tripadvisor", "CoinGecko", "QuickNode", "Messari", "Allium", "Syra", "Arkham", "ChainQuery"]) {
     assert.match(html, new RegExp(merchant.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
   assert.match(html, /fictional sample data/i);
@@ -20,6 +20,25 @@ test("demo includes a broad fictional merchant set and sample-data disclosure", 
   assert.match(html, />Certifications</);
   assert.match(html, /<title>xPlore02 — trusted discovery for x402<\/title>/);
   assert.match(html, /xPlore02<\/div>/);
+});
+
+test("Syra profile uses source-backed public data without inventing enterprise evidence", async () => {
+  const html = await readFile(demoPath, "utf8");
+
+  assert.match(html, /id: "syra"/);
+  assert.match(html, /resource: "https:\/\/api\.syraa\.fun\/health"/);
+  assert.match(html, /website: "https:\/\/www\.syraa\.fun"/);
+  assert.match(html, /docsUrl: "https:\/\/api\.syraa\.fun\/skill\.md"/);
+  assert.match(html, /openApiUrl: "https:\/\/api\.syraa\.fun\/openapi\.json"/);
+  for (const network of ["solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "eip155:8453", "eip155:56", "eip155:196"]) {
+    assert.match(html, new RegExp(network.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(html, /merchant-reported and internally inconsistent/i);
+  assert.match(html, /33\.4k calls over 7 days/);
+  assert.match(html, /1\.4% reported 7-day failure rate/);
+  assert.match(html, /certifications: \[\]/);
+  assert.match(html, /sla: "No SLA"/);
+  assert.match(html, /price: null/);
 });
 
 test("demo exposes the planned local interactions", async () => {

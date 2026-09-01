@@ -128,7 +128,7 @@
           <h1>Find the right API.<br>Know who you’re paying.</h1>
           <p class="subhead">Rank x402 merchants by usefulness, trust, performance, and commercial readiness—not by who owns the marketplace.</p>
         </div>
-        <aside class="sample-note"><strong>Demo environment</strong>All merchants, reviews, certifications, and metrics below are fictional sample data.</aside>
+        <aside class="sample-note"><strong>Demo environment</strong>Most merchant quality signals are fictional sample data. Allium and Syra include explicitly labeled source-backed fields.</aside>
       </section>
 
       <section class="stats" aria-label="Marketplace summary">
@@ -171,7 +171,7 @@
           <tbody id="merchant-rows"></tbody>
         </table>
       </div>
-      <div class="footer"><span id="result-count">Showing merchants</span><span>Source names: Agentic Market · Quality signals: fictional demo data</span></div>
+      <div class="footer"><span id="result-count">Showing merchants</span><span>Sources: Agentic Market · Allium and Syra public materials · Other quality signals: fictional demo data</span></div>
     </main>
   </div>
 
@@ -194,7 +194,7 @@
         <li>Missing or unverified evidence lowers the score instead of being treated as neutral.</li>
         <li>Human feedback carries more weight than agent-generated reviews.</li>
         <li>Price is shown and filterable, but does not automatically improve quality.</li>
-        <li>Allium’s enterprise evidence is source-backed; other merchant quality signals are fictional demo data.</li>
+        <li>Allium’s enterprise evidence and Syra’s public product fields are source-backed; other merchant quality signals are fictional demo data.</li>
       </ul>
     </div>
   </dialog>
@@ -219,6 +219,7 @@
       { id: "quicknode", name: "QuickNode", initials: "QN", color: "#4d5f90", category: "Data", task: "RPC and blockchain APIs across 80+ chains", score: 8.5, price: 10, rating: 8.8, uptime: 99.99, latency: 92, verified: true, soc2: "SOC 2 Type II", sla: "99.99%", reviews: 1880, enterprise: true, network: "Base, Solana, Polygon · USDC", refund: "SLA service credits", tasks: ["RPC access", "Transaction data", "Multi-chain infrastructure"], rationale: "High price is offset by very low latency, verified controls, multi-chain breadth, and contractual availability." },
       { id: "messari", name: "Messari", initials: "ME", color: "#315f58", category: "Data", task: "Crypto intelligence and research data", score: 8.7, price: .35, rating: 9.0, uptime: 99.95, latency: 470, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 1216, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on failed report", tasks: ["Asset research", "Protocol metrics", "Market intelligence"], rationale: "Premium pricing reflects curated research, strong usefulness ratings, verified identity, and enterprise controls." },
       { id: "allium", name: "Allium", initials: "AL", color: "#695183", category: "Data", task: "Onchain prices, balances, transactions, PnL, and SQL", score: 8.8, price: .02, rating: 8.9, uptime: 100, uptimePeriod: "90d", latency: null, latencyText: "Sub-second", verified: true, soc2: "SOC certified", certifications: ["SOC 1 Type 1 & 2", "SOC 2 Type 1 & 2"], sla: "99.9%", support: "24/7 enterprise support", reviews: 978, enterprise: true, network: "Base, Polygon, Solana · USDC", refund: "Fees are non-refundable", tasks: ["Wallet balances", "SQL analytics", "Transaction history"], rationale: "Allium publicly states SOC 1 and SOC 2 Type 1 & 2 certification, a 99.9% uptime commitment, and 24/7 enterprise support. Its official status page reports 100% Realtime API uptime over the latest 90-day window; exact contractual remedies depend on the customer Order." },
+      { id: "syra", name: "Syra", initials: "SY", color: "#6657d9", category: "Data", task: "Pay-per-call crypto intelligence and machine-money tools for agents", score: 5.8, price: null, rating: null, uptime: null, latency: null, verified: false, soc2: "Insufficient data", certifications: [], sla: "No SLA", reviews: 0, enterprise: false, network: "Solana, Base, BNB Chain, Algorand, X Layer · USDC and supported stablecoins", refund: "Not publicly disclosed", tasks: ["Crypto news", "Market sentiment", "Trading signals", "Smart-money research"], resource: "https://api.syraa.fun/health", website: "https://www.syraa.fun", docsUrl: "https://api.syraa.fun/skill.md", openApiUrl: "https://api.syraa.fun/openapi.json", path: "/health", method: "GET", lastUpdated: "2026-09-01T13:31:48.000Z", accepts: [{ scheme: "exact", network: "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", asset: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", amount: "route-specific", payTo: "53JhuF8bgxvUQ59nDG6kWs4awUQYCS3wswQmUsV5uC7t" }, { scheme: "exact", network: "eip155:8453", asset: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", amount: "route-specific", payTo: "0xF9dcBFF7EdDd76c58412fd46f4160c96312ce734" }, { scheme: "exact", network: "eip155:56", asset: "0x8d0D000Ee44948FC98c9B98A4FA4921476f08B0d", amount: "route-specific", payTo: "0xF9dcBFF7EdDd76c58412fd46f4160c96312ce734" }, { scheme: "exact", network: "algorand:wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8=", asset: "31566704", amount: "route-specific", payTo: "IQ5SGZDKKOXUKNNX4JH5MXZTVUWZM5SXGD5LIG7FXASOAVFZ2QBMJLSFII" }, { scheme: "exact", network: "eip155:196", asset: "0x779ded0c9e1022225f8e0630b35a9b54be713736", amount: "route-specific", payTo: "0x3b35c4bb0b5304f97644de429f68e3b5be2b400c" }], reportedMetrics: "Syra displayed 33.4k calls over 7 days, 128 wallets, $16,281 settled, and a 1.4% reported 7-day failure rate on September 1, 2026. Detailed dashboard panels simultaneously showed zero paid calls and $0 settled, so these figures are merchant-reported and internally inconsistent.", rationale: "Syra exposes a live x402 v2 payment challenge, multi-network payment options, MCP and SDK integrations, and a broad crypto-intelligence catalog. Missing independent performance evidence, certifications, SLA, exact representative pricing, and reviews materially limit the score." },
       { id: "otto-ai", name: "Otto AI", initials: "OA", color: "#7a6239", category: "Data", task: "Agentic DeFi execution and market intelligence", score: 7.2, price: .003, rating: 7.9, uptime: 99.1, latency: 870, verified: false, soc2: "No SOC 2", sla: "Best effort", reviews: 356, enterprise: false, network: "Base, Solana, Polygon · USDC", refund: "Endpoint dependent", tasks: ["Swaps", "Yield discovery", "Token research"], rationale: "Broad functionality and good value, but the large endpoint surface has uneven evidence and no audited control set." },
       { id: "apify", name: "Apify", initials: "AP", color: "#3e755e", category: "Data", task: "Web scraping, crawling, extraction, and automation", score: 8.4, price: 1, rating: 8.8, uptime: 99.95, latency: 1240, verified: true, soc2: "SOC 2 Type II", sla: "99.9%", reviews: 2265, enterprise: true, network: "Base, Solana · USDC", refund: "Credit on failed actor run", tasks: ["Web scraping", "Crawling", "Structured extraction"], rationale: "Mature platform, verified controls, and large usage history outweigh higher latency and per-call price." },
       { id: "dripstack", name: "Dripstack", initials: "DR", color: "#73564c", category: "Data", task: "Pay-per-article access to Substack posts", score: 6.5, price: .2, rating: 7.2, uptime: 98.7, latency: 760, verified: false, soc2: "No SOC 2", sla: "No SLA", reviews: 143, enterprise: false, network: "Base, Solana · USDC", refund: "Refund if article unavailable", tasks: ["Paywalled articles", "Newsletter research", "Creator content"], rationale: "Clear consumer use case, but limited review volume and no enterprise controls constrain higher-stakes adoption." },
@@ -232,11 +233,11 @@
     const registry = {
       x402Version: 2,
       items: profiles.map((profile) => ({
-        resource: `https://api.${profile.id}.example/v1/query`,
+        resource: profile.resource || `https://api.${profile.id}.example/v1/query`,
         type: "http",
         x402Version: 2,
-        lastUpdated: "2026-08-21T16:40:14.015Z",
-        accepts: [{
+        lastUpdated: profile.lastUpdated || "2026-08-21T16:40:14.015Z",
+        accepts: profile.accepts || [{
           scheme: "exact",
           network: profile.network.includes("Solana") && !profile.network.includes("Base") ? "solana:mainnet" : "eip155:8453",
           asset: profile.network === "Unknown" ? "unknown" : "USDC",
@@ -251,16 +252,16 @@
             description: profile.task,
             category: profile.category.toUpperCase().replaceAll(" ", "_"),
             tags: ["x402", ...profile.tasks.map((task) => task.toLowerCase().replaceAll(" ", "-"))],
-            website: `https://${profile.id}.example`,
-            docsUrl: `https://${profile.id}.example/docs`,
-            openApiUrl: `https://${profile.id}.example/openapi.yaml`
+            website: profile.website || `https://${profile.id}.example`,
+            docsUrl: profile.docsUrl || `https://${profile.id}.example/docs`,
+            openApiUrl: profile.openApiUrl || `https://${profile.id}.example/openapi.yaml`
           },
-          path: "/v1/query",
-          method: "GET",
+          path: profile.path || "/v1/query",
+          method: profile.method || "GET",
           description: profile.task,
           rating: profile.rating,
           usefulFor: profile.tasks.join(", "),
-          topRatings: [{ task: profile.tasks[0], rating: profile.rating, reason: profile.rationale }],
+          topRatings: profile.rating === null ? [] : [{ task: profile.tasks[0], rating: profile.rating, reason: profile.rationale }],
           certifications: profile.certifications
             ? profile.certifications.map((status) => ({ type: status.startsWith("SOC 1") ? "soc1" : "soc2", status, link: "https://www.allium.so/security" }))
             : profile.soc2 === "No SOC 2" || profile.soc2 === "Insufficient data" ? [] : [{ type: "soc2", status: profile.soc2, link: "https://example.com/sample-certificate", last_renewed: "2026-01-15", expires: "2027-01-15" }],
@@ -287,7 +288,7 @@
         verified: item.metadata.provider.verified,
         task: item.metadata.description,
         rating: item.metadata.rating,
-        price: Number(item.accepts[0].amount) / 1_000_000,
+        price: profile.price,
         uptime: item.metadata.uptime.value === null ? null : item.metadata.uptime.value * 100,
         latency: item.metadata.latency.value,
         latencyText: item.metadata.latency.description,
@@ -349,7 +350,7 @@
         <td class="rank">${index + 1}</td>
         <td class="merchant-cell"><div class="merchant"><span class="avatar" style="background:${item.color}">${item.initials}</span><div><div class="merchant-name">${item.name}${item.verified ? '<span class="verified" aria-label="Verified">●</span>' : ""}</div><div class="merchant-task">${item.task}</div></div></div></td>
         <td><span class="score" style="color:${scoreTone(item.score)}">${item.score.toFixed(1)} <small>/ 10</small></span></td>
-        <td class="price">$${item.price < .001 ? item.price.toFixed(6) : item.price.toFixed(3)} / call</td>
+        <td class="price">${item.price === null ? "Varies by route" : "$" + (item.price < .001 ? item.price.toFixed(6) : item.price.toFixed(3)) + " / call"}</td>
         <td class="metric">${item.uptime === null ? "—" : item.uptime + "%"}<small>${item.uptime === null ? "Insufficient data" : item.uptimePeriod + " observed"}</small></td>
         <td class="metric">${item.latency === null ? (item.latencyText || "—") : item.latency + " ms"}<small>${item.latency === null ? (item.latencyText ? "Official description" : "Insufficient data") : "p50 · 7 days"}</small></td>
         <td>${trustBadge(item)}</td><td>${certBadge(item)}</td><td>${slaBadge(item)}</td>
@@ -362,13 +363,14 @@
       if (!item) return;
       document.querySelector("#dialog-title").textContent = item.name;
       document.querySelector("#dialog-body").innerHTML = `<p class="rationale"><strong>Why it ranks here:</strong> ${item.rationale}</p><div class="details">
-        <div class="detail"><span>Human usefulness</span><b>${item.rating.toFixed(1)} / 10 from ${item.reviews.toLocaleString()} reviews</b></div>
+        <div class="detail"><span>Human usefulness</span><b>${item.rating === null ? "Insufficient data" : item.rating.toFixed(1) + " / 10 from " + item.reviews.toLocaleString() + " reviews"}</b></div>
         <div class="detail"><span>Operator identity</span><b>${item.verified ? "Verified by xPlore02" : "Not verified"}</b></div>
         <div class="detail"><span>Payment network</span><b>${item.network}</b></div>
         <div class="detail"><span>Resource</span><b>${item.resource}</b></div>
         <div class="detail"><span>Refund policy</span><b>${item.refund}</b></div>
         <div class="detail"><span>Certifications</span><b>${item.soc2}</b></div>
         <div class="detail"><span>Availability commitment</span><b>${item.sla} · ${item.support}</b></div>
+        ${item.reportedMetrics ? `<div class="detail"><span>Merchant-reported activity</span><b>${item.reportedMetrics}</b></div>` : ""}
       </div><div class="tasks"><span>Commonly useful for</span><div class="task-list">${item.tasks.map((task) => `<span class="task">${task}</span>`).join("")}</div></div>`;
       dialog.showModal();
     }
