@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const demoPath = new URL("../xplore-marketplace-demo.html", import.meta.url);
+const demoPath = new URL("../index.html", import.meta.url);
 
 test("demo includes a broad merchant set and sample-data disclosure", async () => {
   const html = await readFile(demoPath, "utf8");

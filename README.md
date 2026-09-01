@@ -11,11 +11,11 @@ entirely in the browser with no server or dependencies.
 https://f.stableupload.dev/nhanj4av9x/demo.xplore02.html
 
 The hosted page is a published snapshot. The version-controlled source of
-truth is `xplore-marketplace-demo.html` in this repository.
+truth is `index.html` in this repository.
 
 ## Run the demo
 
-Open `xplore-marketplace-demo.html` in a browser.
+Open `index.html` in a browser.
 
 ## Run the tests
 
@@ -25,7 +25,7 @@ node --test tests/xplore-marketplace-demo.test.mjs
 
 ## Project files
 
-- `xplore-marketplace-demo.html` — interactive standalone demo
+- `index.html` — interactive standalone demo and static-host entry point
 - `xplore02.md` — original product notes and proposed registry schema
 - `docs/superpowers/specs/` — demo design
 - `docs/superpowers/plans/` — implementation plan
