@@ -8,7 +8,7 @@ entirely in the browser with no server or dependencies.
 
 ## Hosted demo
 
-https://f.stableupload.dev/nhanj4av9x/demo.xplore02.html
+https://xplore02.campbell-colton3.workers.dev/
 
 The hosted page is a published snapshot. The version-controlled source of
 truth is `index.html` in this repository.
